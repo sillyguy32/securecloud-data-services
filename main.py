@@ -1,5 +1,5 @@
 from database import SecureCloudDatabase
-
+from auth import register, login
 try:
     from encryption import encrypt_data, decrypt_data
     encryption_available = True
@@ -14,11 +14,11 @@ def main():
     db = SecureCloudDatabase()
 
     print(" Creating user...")
-    user = db.create_user("rayan", "123456", "client")
-    print("User created:", user["username"])
+    user = register(db,"rayan", "123456", "client")
+    print("User created:", user["username"], "with role:", user["role"])
 
     print("\n Authenticating user...")
-    auth_user = db.authenticate_user("rayan", "123456")
+    auth_user = login(db,"rayan", "123456")
 
     if not auth_user:
         print(" Login failed")
@@ -46,8 +46,8 @@ def main():
 
     files = db.get_user_files(auth_user["id"])
 
-    for f in files:
-        data = f["data"]
+    for f in files:  # loop through files and print content
+        data = f["data"] 
 
         if encryption_available:
             data = decrypt_data(data)

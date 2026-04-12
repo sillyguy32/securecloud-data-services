@@ -1,5 +1,6 @@
 from datetime import datetime
 from hashing import hash_password, verify_password
+from auth import register, login
 
 class SecureCloudDatabase:
     """
@@ -122,14 +123,24 @@ class SecureCloudDatabase:
 
 if __name__ == "__main__":
 
+    from auth import register, login
+
     db = SecureCloudDatabase()
 
-    user = db.create_user("rayan", "123456", "client")
+    #  Register user
+    user = register(db, "rayan", "123456", "client")
     print("User created:", user)
 
-    auth = db.authenticate_user("rayan", "123456")
-    print("Login success:", auth is not None)
+    #  Login with MFA
+    auth_user = login(db, "rayan", "123456")
 
+    if not auth_user:
+        print("Login failed")
+        exit()
+
+    print("Login success:", True)
+
+    #  Continue system operations
     file = db.store_file(user["id"], "ENCRYPTED_SAMPLE_DATA")
     print("File stored:", file)
 
