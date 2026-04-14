@@ -75,9 +75,7 @@ class SecureCloudDatabase:
 
         return file_entry
 
-    # ==============================
-    # 📥 RETRIEVE USER FILES
-    # ==============================
+  
 
     def get_user_files(self, user_id: int):
         """
